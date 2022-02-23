@@ -1,2 +1,174 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+using System;
+using System.IO;
+using System.Text;
+
+namespace ConsoleApp5
+{
+    class Dane //Głowna klasa do dziedziczenia
+    {
+        //elementy powtarzające się we wszystkich klasach przy wykorzystaniu objektów
+        public string kraj = "kraj: 1";
+        public string ocena = "Wpisanie miejsca: 2";
+        public string najlepszy_strzelec = "Najlepszy strzelec: 3";
+        public string zapis = "Zapis do pliku: 4";
+        public string odczyt = "Odczyt z pliku: 5";
+        public string koniec = "Koniec: 6";
+        public virtual void Objekt()//wywołanie funkcji 'Objekt', odwołanie do polimorfizmu
+        {
+            Console.WriteLine("Dziennik lekcyjny::::");//Wypisanie na ekranie
+            Console.WriteLine(kraj + "\n" + ocena + "\n" + najlepszy_strzelec + "\n" + zapis + "\n" + odczyt + "\n" + koniec);
+        }
+    }
+    class Name : Dane //dziedziczenie z klasy głównej
+    {
+        public string kraj2 = "Podaj kraj:";
+        public override void Objekt() //Wywołanie objektu poprzez polimorfizm 
+        {
+            Console.WriteLine(kraj + "\n" + kraj2);
+        }
+    }
+    class Grade : Dane //dziedziczenie z klasy głównej
+    {
+        public string ocena2 = "Wpisanie miejsca\nPodaj ilosc ocen do wpisania:";
+        public override void Objekt() //Wywołanie objektu poprzez polimorfizm 
+        {
+            Console.WriteLine(ocena + "\n" + ocena2);
+        }
+    }
+    class Surname : Dane //dziedziczenie z klasy głównej
+    {
+        public string najlepszy_strzelec2 = "Podaj najlepszy strzelec Euro:";
+        public override void Objekt() //Wywołanie objektu poprzez polimorfizm 
+        {
+            Console.WriteLine(najlepszy_strzelec + "\n" + najlepszy_strzelec2);
+        }
+    }
+    class Save : Dane //dziedziczenie z klasy głównej
+    {
+        public string zapis2 = "Zapis do pliku:";
+        public override void Objekt() //Wywołanie objektu poprzez polimorfizm 
+        {
+            Console.WriteLine(zapis + "\n" + zapis2);
+        }
+    }
+    class Load : Dane //dziedziczenie z klasy głównej
+    {
+        public string odczyt2 = "Odczyt z pliku:";
+        public override void Objekt() //Wywołanie objektu poprzez polimorfizm 
+        {
+            Console.WriteLine(odczyt + "\n" + odczyt2);
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Adam Majak 18439\n");
+            //określenie zmiennych typu int:
+            int ilosc = 0;
+            int a;
+            //określenie ciągów znakowych:
+            string kraj = "";
+            string najlepszy_strzelec = "";
+            //określenie tablic typu float:
+            float[] tab1 = new float[6];
+            float[] tab2 = new float[6];
+            //określenie zmiennej typu char do menu:
+            char znak;
+            //odwołanie do klasy, oraz wywołanie funkcji objekt:
+            Dane wstep = new Dane();
+            wstep.Objekt();
+            //Tworzenie pliku o nazwie "TypynaEuro do którego mogą zostać zapisane dane:
+            StreamWriter sw = new StreamWriter("TypynaEuro.txt", true);
+            //Warunek wielkości pliku:
+            if (new FileInfo("TypynaEuro.txt").Length == 0)
+            {
+                //Jeżeli plik jest pusty to pierwszą linią w tym pliku będą nagółówki:
+                sw.Write("kraj\tWpisanie miejsca\tnajlepszy strzelec\n");
+                //Zamknięcię pliku:
+                sw.Close();
+            }
+            else
+            { sw.Close(); }
+            do
+            {
+                //Menu wyboru:
+                Console.WriteLine("Wybor:");
+                //Przemieszczanie się po menu za pomocą zmiennej "znak":
+                znak = Convert.ToChar(Console.ReadLine());
+                //Switch(znak) jako menu wyboru:
+                switch (znak)
+                {
+
+                    case '1':
+                        //odwołanie do klasy, oraz wywołanie funkcji objekt:
+                        Dane im = new Name();
+                        im.Objekt();
+                        //Wpisanie z klawiatury zmiennej kraj:
+                        kraj = Console.ReadLine();
+                        break;
+                    case '2':
+                        //odwołanie do klasy, oraz wywołanie funkcji objekt:
+                        Dane oce = new Grade();
+                        oce.Objekt();
+                        //Wpisanie z klawiatury zmiennej ilość:
+                        ilosc = Convert.ToInt32(Console.ReadLine());
+                        //pętla for służący do wpisania miejsca jakie podamy:
+                        for (int i = 0; i < ilosc; i++)
+                        {
+                            Console.WriteLine("Wpisz miejsce jakie uważasz, że zajmię kraj:");
+                            a = int.Parse(Console.ReadLine());
+                        }
+                        break;
+                    case '3':
+                        //odwołanie do klasy, oraz wywołanie funkcji objekt:
+                        Dane naz = new Surname();
+                        naz.Objekt();
+                        //Wpisanie z klawiatury zmiennej najlepszy strzelec:
+                        najlepszy_strzelec = Console.ReadLine();
+                        break;
+
+                    case '4':
+                        //odwołanie do klasy, oraz wywołanie funkcji objekt:
+                        Dane zap = new Save();
+                        zap.Objekt();
+                        //Zapis wszystkich danych do pliku "TypynaEuro":
+                        //Plik TypynaEuro.txt znajduje się w lokalizacji "\ConsoleApp5\bin\Debug\net5.0\TypynaEuro.txt"
+                        StreamWriter sa = new StreamWriter("TypynaEuro.txt", true);
+                        sa.Write(kraj + "\t");
+                        sa.Write(najlepszy_strzelec + "\t");
+                        for (int i = 0; i < ilosc; i++)
+                        {
+                            sa.Write(tab1[i] + " ");
+                        }
+                        sa.Write("\t");
+                        for (int i = 0; i < ilosc; i++)
+                        {
+                            sa.Write(tab2[i] + " ");
+                        }
+                        sa.Write("\t");
+                        sa.Close();
+                        break;
+
+                    case '5':
+                        //odwołanie do klasy, oraz wywołanie funkcji objekt:
+                        Dane odcz = new Load();
+                        odcz.Objekt();
+                        //Odczytanie danych z pliku oraz wyświetlenie ich:
+                        StreamReader sr = new StreamReader("TypynaEuro.txt");
+                        string line;
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            Console.WriteLine(line);
+                        }
+                        sr.Close();
+                        break;
+                    case '6':
+                        Console.WriteLine("Koniec");
+                        break;
+                }
+                //Warunek wykonania pętli switch:
+            } while ((znak == '1') || (znak == '2') || (znak == '3') || (znak == '4') || (znak == '5'));
+        }
+    }
+}
